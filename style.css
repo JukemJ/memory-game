@@ -59,3 +59,8 @@ body{
     border-radius: 10px;
     font-weight: 800;
 }
+img{
+    height: 100px;
+    width: 100px !important;
+    display:none;
+}

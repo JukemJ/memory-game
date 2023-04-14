@@ -9,7 +9,6 @@ let seconds = 0
 
 function newGame(boardSize){
     document.querySelector('#game-board').innerText= ''
-    clearInterval(upTimer)
     createBoard(boardSize)
     timerElement.innerHTML = '0:00'
     seconds = 0
@@ -19,13 +18,12 @@ function newGame(boardSize){
     
 }
 
-
-
 function createBoard(size){ 
-    let nums = Array(size*2).fill(null).map((x,i) => i+1)
+    let nums = Array(size*size/2).fill(null).map((x,i) => i+1)
     nums = nums.concat(nums)
     let count = 0
-    const board = document.getElementById('game-board') 
+    const board = document.getElementById('game-board')
+    board.appendChild(winIcon())
     for(let i = 0; i < size; i++){ 
       let row = document.createElement("div"); 
       row.classList.add('row','justify-content-center')
@@ -44,13 +42,6 @@ function createBoard(size){
     cells.forEach(x => x.addEventListener('click', reveal))
   }
 
-  function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
 
   function reveal(){
     const id = this.getAttribute('id')
@@ -68,6 +59,7 @@ function createBoard(size){
         lastPicked = null
         moves++
         moveCount.innerText = moves
+        winCheck()
     }
     else if(!lastPicked) lastPicked = num
     else {
@@ -81,7 +73,7 @@ function createBoard(size){
         moveCount.innerText = moves
 
         //this puts back the value of the matched cells...
-        //there is a better way to do this but I don't know how
+        //maybe there is a better way to do this but I don't know how
         document.querySelectorAll('.matched').forEach(x => x.innerText = x.getAttribute('value'))
     }
   }
@@ -95,3 +87,24 @@ function upTimer() {
     timerElement.innerHTML = minute + ":" + updSecond.toString().padStart(2,'0')
 
 }
+
+function winCheck(){
+    if(document.querySelectorAll('.matched').length == 16){
+        document.querySelector('img').style.display = 'block'
+        //clearInterval(upTimer) //this doesn't work...?
+    }
+}
+
+function winIcon(){
+    let row = document.createElement('div')
+    row.classList.add('row','justify-content-center')
+    let img = document.createElement('img')
+    img.setAttribute('src','confetti.gif')
+    img.setAttribute('alt','You Win!')
+    row.appendChild(img)
+    return row
+}
+
+//TODO
+//stop timer after game win
+//show second pick if !match
