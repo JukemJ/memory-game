@@ -1,0 +1,1 @@
+This is a simple single page memory game. The game can be played locally by just opening the index.html file. Design inspired by the challenge from Frontend Mentor.
